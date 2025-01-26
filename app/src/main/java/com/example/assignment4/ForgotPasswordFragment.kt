@@ -46,6 +46,12 @@ class ForgotPasswordFragment : Fragment() {
     ): View? {
         _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
 
+        binding.back.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, LoginFragment())
+                .commit()
+        }
+
         binding.submit.setOnClickListener {
             binding.loading.visibility = View.VISIBLE
 

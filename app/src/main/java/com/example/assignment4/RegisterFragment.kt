@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if(password !== rePassword) {
+            if(password != rePassword) {
                 Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_LONG).show()
                 binding.loading.visibility = View.GONE
                 return@setOnClickListener
