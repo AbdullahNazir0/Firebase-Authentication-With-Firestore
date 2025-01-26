@@ -82,7 +82,8 @@ class RegisterFragment : Fragment() {
                         "lastName" to lastName,
                         "email" to email,
                         "username" to username,
-                        "phone" to phone
+                        "phone" to phone,
+                        "password" to password
                     )
 
                     userRef.set(userData)
