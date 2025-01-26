@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "562248051264",
+    "project_id": "mad-assignment-4-fdf2d",
+    "storage_bucket": "mad-assignment-4-fdf2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562248051264:android:1831706306e13308864da5",
+        "android_client_info": {
+          "package_name": "com.example.assignment4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_ODhfQNIruhcvjtMH6LkL-6Xu7w1hAOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
