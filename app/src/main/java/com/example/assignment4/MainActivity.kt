@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,7 +38,20 @@ class MainActivity : AppCompatActivity() {
         fetchUser()
 
         binding.deleteAccount.setOnClickListener {
-            deleteUser()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure you want to delete your account?")
+            builder.setTitle("Danger!")
+            builder.setCancelable(true)
+
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                dialog.cancel()
+                deleteUser()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.cancel()
+            }
+            val alert = builder.create()
+            alert.show()
         }
 
         binding.logout.setOnClickListener {

@@ -47,6 +47,12 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            if(password.length < 6) {
+                Toast.makeText(requireContext(), "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
+                binding.loading.visibility = View.GONE
+                return@setOnClickListener
+            }
+
             registerUser(firstName, lastName, email, username, phone, password)
         }
 
