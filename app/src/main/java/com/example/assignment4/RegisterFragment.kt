@@ -71,36 +71,48 @@ class RegisterFragment : Fragment() {
     }
 
     private fun registerUser(firstName: String, lastName: String, email: String, username: String, phone: String, password: String) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                binding.loading.visibility = View.GONE
-                if (task.isSuccessful) {
-                    val user = FirebaseAuth.getInstance().currentUser
-                    val userRef = FirebaseFirestore.getInstance().collection("users").document(user?.uid!!)
-                    val userData = hashMapOf(
-                        "firstName" to firstName,
-                        "lastName" to lastName,
-                        "email" to email,
-                        "username" to username,
-                        "phone" to phone,
-                        "password" to password
-                    )
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val signInMethods = task.result?.signInMethods
+                if (signInMethods.isNullOrEmpty()) {
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { registrationTask ->
+                            binding.loading.visibility = View.GONE
+                            if (registrationTask.isSuccessful) {
+                                val user = FirebaseAuth.getInstance().currentUser
+                                val userRef = FirebaseFirestore.getInstance().collection("users").document(user?.uid!!)
+                                val userData = hashMapOf(
+                                    "firstName" to firstName,
+                                    "lastName" to lastName,
+                                    "email" to email,
+                                    "username" to username,
+                                    "phone" to phone,
+                                    "password" to password
+                                )
 
-                    userRef.set(userData)
-                        .addOnCompleteListener { _ ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(requireContext(), "Registration successful", Toast.LENGTH_LONG).show()
-                                parentFragmentManager.beginTransaction()
-                                    .replace(R.id.container, LoginFragment())
-                                    .commit()
+                                userRef.set(userData)
+                                    .addOnCompleteListener { firestoreTask ->
+                                        if (firestoreTask.isSuccessful) {
+                                            Toast.makeText(requireContext(), "Registration successful", Toast.LENGTH_LONG).show()
+                                            parentFragmentManager.beginTransaction()
+                                                .replace(R.id.container, LoginFragment())
+                                                .commit()
+                                        } else {
+                                            Toast.makeText(requireContext(), "Failed to save user data", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
                             } else {
-                                Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), "Registration failed: ${registrationTask.exception?.message}", Toast.LENGTH_LONG).show()
                             }
                         }
-
                 } else {
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_LONG).show()
+                    // Email already in use
+                    Toast.makeText(requireContext(), "Email is already in use, please log in", Toast.LENGTH_LONG).show()
                 }
+            } else {
+                Toast.makeText(requireContext(), "Failed to check email availability: ${task.exception?.message}", Toast.LENGTH_LONG).show()
             }
+        }
     }
+
 }

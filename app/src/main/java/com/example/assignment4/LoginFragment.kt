@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.assignment4.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 class LoginFragment : Fragment() {
 
@@ -83,7 +87,25 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    Toast.makeText(requireContext(), "Login failed", Toast.LENGTH_LONG).show()
+                    val exception = task.exception
+                    when (exception) {
+                        is FirebaseAuthInvalidUserException -> {
+                            // The user does not exist or has been deleted
+                            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_LONG).show()
+                        }
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            // Invalid password or email format
+                            Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_LONG).show()
+                        }
+                        is FirebaseAuthUserCollisionException -> {
+                            // Email is already registered
+                            Toast.makeText(requireContext(), "Email already in use", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            // General authentication failure
+                            Toast.makeText(requireContext(), "Authentication failed: ${exception?.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
             }
     }

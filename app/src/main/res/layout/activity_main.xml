@@ -90,6 +90,19 @@
 
     <!-- Delete Account Button -->
     <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password"/>
+
+    <!-- Delete Account Button -->
+    <Button
         android:id="@+id/deleteAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,6 +112,6 @@
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password"/>
+        app:layout_constraintTop_toBottomOf="@id/logout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
